@@ -1,6 +1,29 @@
 var util = require('util');
 const FinKittyModel = require('../models/FinKittyModel.model');
 
+var CryptoJS = require("crypto-js");
+
+var crypt = {
+  secret : process.env.MONGO_CRYPT_SECRET,
+  encrypt : function (clear){
+    //return clear;
+
+    var cipher = CryptoJS.AES.encrypt(clear, crypt.secret);
+    cipher = cipher.toString();
+    return cipher;
+  },
+
+  decrypt : function (cipher) {
+    // return cipher;
+    // console.log(`for deciphering: ${cipher}`);
+
+    var decipher = CryptoJS.AES.decrypt(cipher, crypt.secret);
+    decipher = decipher.toString(CryptoJS.enc.Utf8);
+    // console.log(`deciphered: ${decipher}`);
+    return decipher;
+  }
+};
+
 //Simple version, without validation or sanitation
 exports.test = function (req, res) {
     res.send('Greetings from the Test controller!');
@@ -44,7 +67,7 @@ exports.model_create = function (req, res) {
   const req_data = {
     FinKittyUserID: req.body.userID,
     FinKittyModelName: req.body.modelName,
-    FinKittyModel: req.body.model,
+    FinKittyModel: crypt.encrypt(req.body.model),
   };
   // if the data is passed as parameters
   // instead of in the body of the request
@@ -105,7 +128,12 @@ exports.model_details = function (req, res) {
         console.error("Error: "+err);
         res.send('Query failed');
       } else {
-        res.send(model);
+        // console.log(`model_details got ${JSON.stringify(model)}`);
+        if(model[0] === undefined || model[0]["FinKittyModel"] === undefined){
+          res.send('Query failed');
+          return;
+        }
+        res.send(crypt.decrypt(model[0]["FinKittyModel"]));
       }
     }
   );
@@ -150,9 +178,11 @@ exports.model_list = function (req, res) {
         console.error("Error: "+err);
         res.send('Query failed');
       } else {
-        res.send(model.map((m)=>{
+        const result = model.map((m)=>{
           return m["FinKittyModelName"];
-        }));
+        });
+        // console.log(`returning model names ${result}`);
+        res.send(result);
       }
     }
   );
@@ -192,7 +222,7 @@ exports.model_update = function (req, res) {
   // console.log(`query is ${JSON.stringify(query)}`);
   var updateData = { 
     ...query,
-    FinKittyModel: req.body.model,
+    FinKittyModel: crypt.encrypt(req.body.model),
   };
   // console.log(`updateData is ${JSON.stringify(updateData)}`);
   FinKittyModel.replaceOne(// or try updateOne
