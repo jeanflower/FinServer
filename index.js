@@ -9,6 +9,8 @@ const cors = require('cors');
 
 const mongoose = require('mongoose');
 
+console.log(`process.env.MONGO_URL = ${process.env.MONGO_URL}`);
+
 mongoose.connect(
   process.env.MONGO_URL,
   {dbName: 'FinKittyData'},
