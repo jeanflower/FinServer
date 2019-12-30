@@ -30,6 +30,7 @@ let port = process.env.PORT;
 if (port == null || port == "") {
   port = 3001;
 }
+console.log(`port = ${port}`);
 app.listen(
   port,
   () => {
