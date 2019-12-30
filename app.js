@@ -7,6 +7,7 @@ const product = require('./src/routes/product.route');
 const app = express();
 const mongoose = require('mongoose');
 
+console.log(`process.env.MONGO_URL = ${process.env.MONGO_URL}`);
 mongoose.connect(
   process.env.MONGO_URL,
   {dbName: 'test'} 
