@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 const finkitty = require('./src/routes/finkitty.route');
 const app = express();
 const cors = require('cors');
-const port = 3001;
 
 const mongoose = require('mongoose');
 
@@ -25,6 +24,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use('/finkitty', finkitty);
 
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3001;
+}
 app.listen(
   port,
   () => {

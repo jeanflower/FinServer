@@ -18,5 +18,8 @@
     "mongoose": "^5.8.3"
   },
   "devDependencies": {},
-  "description": ""
+  "description": "",
+  "engines": {
+    "node": "10.x"
+  }
 }
