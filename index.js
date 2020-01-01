@@ -9,11 +9,11 @@ const cors = require('cors');
 
 const mongoose = require('mongoose');
 
-console.log(`process.env.MONGODB_URI = ${process.env.MONGODB_URI}`);
+console.log(`process.env.MONGODB_URI_JAF = ${process.env.MONGODB_URI_JAF}`);
 
 mongoose.connect(
-  process.env.MONGODB_URI,
-  //{dbName: 'FinKittyData'},
+  process.env.MONGODB_URI_JAF,
+  {dbName: 'FinKittyData'},
 );
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
