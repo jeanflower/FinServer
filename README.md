@@ -35,9 +35,9 @@ The app uses an environment variable (with mongo username, password and cluster 
 
 ```MONGODB_URI_JAF=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/```
 
-## Data encrption
-The app encypts any model information before write to MongoDB, and decrypts it after read from MongoDB.  
-An encyption secret needs to be stored as an environment variable
+## Data encryption
+The app encrypts any model information before write to MongoDB, and decrypts it after reading from MongoDB.  
+An encryption secret needs to be stored as an environment variable
 
 ```MONGO_CRYPT_SECRET=<my_secret>```
 
