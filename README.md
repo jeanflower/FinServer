@@ -3,6 +3,30 @@ Builds a REST interface for data stored in a MongoDB collection.
 
 Uses environment variables in dev.env to learn where the database is.  Defaults to one on the cloud.
 
+# Hosting
+
+## Locally:
+This starts the REST server and uses cloud db:
+```NODE_ENV=development node index.js```
+or
+`./startRESTServer.sh`
+
+This starts the REST server and uses a local db:
+```MONGODB_URI_JAF=mongodb://127.0.0.1:27017/FinKittyData NODE_ENV=development node index.js```
+or
+`./startLocalRESTServer.sh`
+
+## On Heroku
+The Procfile defines the actions of the corresponding Heroku app.  Heroku uses 'dynos' which run this Node app, list for REST calls and can access MongoDB.
+
+Set appropriate environment variables (for MongoDB access and encryption) in the Heroku app at https://dashboard.heroku.com/.
+Useful Heroku commands:
+ - heroku login
+ - git push heroku master
+ - heroku ps
+ - heroku ps:restart
+ - heroku logs --tail
+
 # The REST interface
 ## The API
 The interface is defined according to routes defined in FinServer/src/routes/finkitty.route.js
@@ -34,7 +58,7 @@ These are strings.
 
 ## Data location
 The app uses an environment variable (with mongo username, password and cluster completed) to know where to go for data.
-
+The cloud location is structured like this:
 ```MONGODB_URI_JAF=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/```
 
 To run mongo locally:
@@ -44,9 +68,6 @@ Note a new database (a new data folder) needs a uniqueness index added; read on 
 
 Run the mongodb server
 ```mongod --dbpath Documents/git/FinKitty/mongo/```
-
-Set this in dev env
-```MONGODB_URI_JAF=mongodb://127.0.0.1:27017/test```
 
 Explore the mongo data in a different terminal
 ```mongo```
@@ -83,20 +104,3 @@ This app requires the following key to be applied:
   unique: true
 }
 ```
-
-# Hosting
-
-## Locally:
-```NODE_ENV=development node index.js```
-
-## On Heroku
-The Procfile defines the actions of the corresponding Heroku app.  Heroku uses 'dynos' which run this Node app, list for REST calls and can access MongoDB.
-
-Set appropriate environment variables (for MongoDB access and encryption) in the Heroku app at https://dashboard.heroku.com/.
-Useful Heroku commands:
- - heroku login
- - git push heroku master
- - heroku ps
- - heroku ps:restart
- - heroku logs --tail
-
