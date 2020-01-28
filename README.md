@@ -1,6 +1,8 @@
 # FinServer
 Builds a REST interface for data stored in a MongoDB collection.
 
+Uses environment variables in dev.env to learn where the database is.  Defaults to one on the cloud.
+
 # The REST interface
 ## The API
 The interface is defined according to routes defined in FinServer/src/routes/finkitty.route.js
@@ -35,6 +37,30 @@ The app uses an environment variable (with mongo username, password and cluster 
 
 ```MONGODB_URI_JAF=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/```
 
+To run mongo locally:
+On macos, need a data folder (default one no nlonger works since Catalina). Give permissions:
+```sudo chown -R `id -un` Documents/git/FinKitty/mongo/```
+Note a new database (a new data folder) needs a uniqueness index added; read on and run the createIndex command in the mongo console.
+
+Run the mongodb server
+```mongod --dbpath Documents/git/FinKitty/mongo/```
+
+Set this in dev env
+```MONGODB_URI_JAF=mongodb://127.0.0.1:27017/test```
+
+Explore the mongo data in a different terminal
+```mongo```
+there are many mongo commands; try 
+```
+use FinKittyData $ switches to the right database
+show collections $ lists these, expect to see finkittymodels
+db.stats() $ expect 1 collection and some count of objects
+db.finkittymodels.stats() $ more detailed stats
+db.finkittymodels.deleteMany({FinKittyModelName:"Simple"}) $ if the uniqueness breaks you'll have to delete duplicates before adding uniqueness key
+db.finkittymodels.createIndex({ "FinKittyUserID": 1,   "FinKittyModelName": -1 }, { unique: true }) $ app requires this otherwise switching to an existing model simply creates a new one with same name
+```
+A new mongo database will have a database called test.  This app uses a database called FinKittyData (note capitalisation).  And inside that, we use a collection called finkittymodels (note capitalisation) and its keys are FinKittyUserID, FinKittyModelName, FinKittyModel.  Each model is a document in that collection.
+
 ## Data encryption
 The app encrypts any model information before write to MongoDB, and decrypts it after reading from MongoDB.  
 An encryption secret needs to be stored as an environment variable
@@ -46,7 +72,7 @@ Setting up a MongoDB collection:
  - Network access: MongoDB clusters can have restrictions on access to certain IP addresses,
 so failure to connect can be due to attempting to connect from a not-included IP address
  - Unique data keys: MongoDB will maintain uniqueness if it's given keys.  
-This app expects the following key to be applied:
+This app requires the following key to be applied:
 
 ```
 {
