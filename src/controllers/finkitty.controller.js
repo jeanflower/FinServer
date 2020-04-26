@@ -72,15 +72,19 @@ exports.model_create = function (req, res) {
   // if the data is passed as parameters
   // instead of in the body of the request
   // this will be an empty object.
-  // console.log(`req_data = ${JSON.stringify(req_data)}`);
+  console.log(`req_data = ${JSON.stringify(req_data)}`);
 
   let model = new FinKittyModel( req_data );
   console.log(`create model ${req.body.modelName} with _id = ${model._id}`);
 
   model.save(function (err) {
     if (err) {
-      console.log(util.inspect(err.errmsg));
-      if(err.errmsg.includes("duplicate key")){
+      console.log(`err ${util.inspect(err.errmsg)}`);
+      if(err.errmsg === undefined){
+        console.error("Creation refused with an undefined error message");
+        console.error(`full error is ${err}`);
+        res.send('Model Create failed - undefined');
+      } else if(err.errmsg.includes("duplicate key")){
         console.error("Creation refused for duplicate user/model key");
         res.send('Model Create failed - duplicate');
       } else {
