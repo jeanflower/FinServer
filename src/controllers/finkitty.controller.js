@@ -72,7 +72,7 @@ exports.model_create = function (req, res) {
   // if the data is passed as parameters
   // instead of in the body of the request
   // this will be an empty object.
-  console.log(`req_data = ${JSON.stringify(req_data)}`);
+  // console.log(`req_data = ${JSON.stringify(req_data)}`);
 
   let model = new FinKittyModel( req_data );
   console.log(`create model ${req.body.modelName} with _id = ${model._id}`);
