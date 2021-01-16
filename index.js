@@ -1,9 +1,11 @@
+var constants = require('./constants');
+
 // following tutorial here
 // https://codeburst.io/writing-a-crud-app-with-node-js-and-mongodb-e0827cbbdafb
 require('./env')
 const express = require('express');
 const bodyParser = require('body-parser');
-const finkitty = require('./src/routes/finkitty.route');
+const route = require(`./src/routes/${constants.route}.route`);
 const app = express();
 const cors = require('cors');
 
@@ -31,7 +33,7 @@ mongoose.set('useUnifiedTopology', true);
 
 mongoose.connect(
   process.env.MONGODB_URI_JAF,
-  { dbName: 'FinKittyData' },
+  { dbName: constants.mongoDBName },
 );
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
@@ -42,7 +44,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use('/finkitty', finkitty);
+app.use(`/${constants.route}`, route);
 
 let port = process.env.PORT;
 if (port == null || port == "") {

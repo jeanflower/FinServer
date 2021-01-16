@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
-const tableName = 'FinKittyModels';
+var constants = require('./constants');
+const tableName = constants.mongoCollectionName;
 require('dotenv').config();
 
 let ddb = undefined;
@@ -38,7 +39,7 @@ function setupDDB() {
   ddb = new AWS.DynamoDB({ apiVersion: '2012-10-08' });
   ddb.setEndpoint(endpoint);
 
-  // console.log(`set up DDB`);
+  console.log(`set up DDB`);
 }
 
 async function getTableNames(ddb) {

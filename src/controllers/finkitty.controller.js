@@ -1,5 +1,5 @@
 var util = require('util');
-const FinKittyModel = require('../models/FinKittyModel.model');
+const dbModel = require('../models/FinKittyModel.model');
 
 var CryptoJS = require("crypto-js");
 
@@ -74,7 +74,7 @@ exports.model_create = function (req, res) {
   // this will be an empty object.
   // console.log(`req_data = ${JSON.stringify(req_data)}`);
 
-  let model = new FinKittyModel( req_data );
+  let model = new dbModel( req_data );
   console.log(`create model ${req.body.modelName} with _id = ${model._id}`);
 
   model.save(function (err) {
@@ -125,7 +125,7 @@ exports.model_details = function (req, res) {
     FinKittyModelName: req.query.modelName,
   };
   // console.log(`query is ${JSON.stringify(query)}`);
-  FinKittyModel.find(
+  dbModel.find(
     query, 
     function (err, model) {
       if (err) {
@@ -174,7 +174,7 @@ exports.model_list = function (req, res) {
     FinKittyModelName: 1, 
   }
   // console.log(`query is ${JSON.stringify(query)}`);
-  FinKittyModel.find(
+  dbModel.find(
     query, 
     projection,
     function (err, model) {
@@ -229,7 +229,7 @@ exports.model_update = function (req, res) {
     FinKittyModel: crypt.encrypt(req.body.model),
   };
   // console.log(`updateData is ${JSON.stringify(updateData)}`);
-  FinKittyModel.replaceOne(// or try updateOne
+  dbModel.replaceOne(// or try updateOne
     query,
     updateData, 
     function (err, model) {
@@ -276,7 +276,7 @@ exports.model_delete = function (req, res) {
     FinKittyUserID: req.body.userID,
     FinKittyModelName: req.body.modelName,
   };
-  FinKittyModel.deleteOne(
+  dbModel.deleteOne(
     query, 
     function (err, model) {
       if (err) {
