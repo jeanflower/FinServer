@@ -11,9 +11,27 @@ const mongoose = require('mongoose');
 
 console.log(`process.env.MONGODB_URI_JAF = ${process.env.MONGODB_URI_JAF}`);
 
+/*
+// from the MongoDB Node.js driver:
+DeprecationWarning: current URL string parser is deprecated, and will be removed 
+in a future version. To use the new parser, 
+pass option { useNewUrlParser: true } to MongoClient.connect.
+(node:32002) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, 
+and will be removed in a future version. To use the new Server Discover and Monitoring engine, 
+pass option { useUnifiedTopology: true } to the MongoClient constructor.
+//
+// Advice from mongoose:
+//https://mongoosejs.com/docs/deprecations.html
+*/
+
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
+
 mongoose.connect(
   process.env.MONGODB_URI_JAF,
-  {dbName: 'FinKittyData'},
+  { dbName: 'FinKittyData' },
 );
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
