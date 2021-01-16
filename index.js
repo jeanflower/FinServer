@@ -54,6 +54,6 @@ console.log(`port = ${port}`);
 app.listen(
   port,
   () => {
-    return console.log(`FinKitty server listening on port ${port}!`);
+    return console.log(`${constants.mongoDBName} server listening on port ${port}`);
   },
 );

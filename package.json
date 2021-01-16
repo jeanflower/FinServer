@@ -8,7 +8,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.828.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "crypto-js": "^3.3.0",
