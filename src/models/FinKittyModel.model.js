@@ -5,7 +5,7 @@ let FinKittySchema = new Schema({
     FinKittyUserID: {type: String, required: true, max: 500},
     FinKittyModelName: {type: String, required: true, max: 100},
     FinKittyModel: {type: String, required: true, max: 32000},
-}, { collection: 'FinKittyModels' });
+}, { collection: 'finkittymodels' });
 
 
 // Export the model
