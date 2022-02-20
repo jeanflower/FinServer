@@ -16,6 +16,7 @@
     "mongodb": "^4.4.0",
     "mongoose": "^5.11.12"
   },
+  "devDependencies": {},
   "description": "",
   "engines": {
     "node": "16.x"
