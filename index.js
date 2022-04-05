@@ -43,7 +43,11 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({
+  extended: false,
+  limit: '25mb',
+}));
+
 app.use(`/${constants.route}`, route);
 
 let port = process.env.PORT;
